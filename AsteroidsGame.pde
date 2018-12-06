@@ -1,6 +1,7 @@
 Spaceship ship = new Spaceship();
 Star galaxy[] = new Star[200];
 ArrayList<Asteroid> rock = new ArrayList<Asteroid>();
+ArrayList<Bullet> pew = new ArrayList<Bullet>();
 public void setup() 
 {
   size(600,600);
@@ -11,6 +12,7 @@ public void setup()
     rock.add(new Asteroid());
   }
 }
+
 public void draw() 
 {
   background(0);
@@ -25,6 +27,18 @@ public void draw()
       rock.remove(i);
     }
   } 
+  for(int i = 0; i < pew.size(); i++){
+    pew.get(i).show();
+    pew.get(i).move();
+    for(int ri = rock.size()-1; ri >= 0; ri--){
+      float hit = dist(rock.get(ri).getX(), rock.get(ri).getY(), pew.get(i).getX(), pew.get(i).getY());
+      if(hit < 20){
+        rock.remove(ri);
+        pew.remove(i);
+        break;
+      }
+    }
+  }
   ship.move();
   ship.show();
 }
@@ -45,5 +59,9 @@ public void keyPressed(){
     ship.setDirectionX(0);
     ship.setDirectionY(0);
     ship.setPointDirection((int)(Math.random()*361));
+  }
+  if(key == ' '){
+    Bullet x = new Bullet();
+    pew.add(x);
   }
 } 
